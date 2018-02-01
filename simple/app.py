@@ -2,7 +2,7 @@ import requests
 import json
 
 TEAM_ID = 7
-REPOSITORY_URL = ""
+REPOSITORY_URL = "https://github.com/infomiho/changecode"
 REGISTER_URL = "http://52.233.158.172/change/api/en/account/register"
 LOGIN_URL = "http://52.233.158.172/change/api/hr/account/login"
 DETAILS_URL = "http://52.233.158.172/change/api/hr/team/details/%d" % (TEAM_ID)
@@ -23,7 +23,7 @@ def register():
     if response['Errors'] : 
         print("Errors: ", *response['Errors'])
     else:
-        print(response['Result'])
+        print("Success:", team_data)
 
 def login():
     login_data = {
@@ -35,7 +35,7 @@ def login():
         print("Errors: ", *response['Errors'])
     else:
         team_data = json.loads(response['Result'])
-        print(team_data)
+        print("Success:", team_data)
         return team_data['AuthorizationToken']
 
 def details(token):
@@ -44,7 +44,7 @@ def details(token):
         print("Errors: ", *response['Errors'])
     else:
         team_data = json.loads(response['Result'])
-        print(team_data)
+        print("Success:", team_data)
 
 def confirm(token):
     response = json.loads(requests.get(CONFIRM_URL, headers = {"X-Authorization": token}).text)
@@ -52,10 +52,10 @@ def confirm(token):
         print("Errors: ", *response['Errors'])
     else:
         team_data = json.loads(response['Result'])
-        print(team_data)
+        print("Success:", team_data)
 
 if __name__ == '__main__':
     register()
     token = login()
     details(token)
-    # confirm(token)
+    confirm(token)
